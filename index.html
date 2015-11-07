@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>AngularJS Add/Remove Form</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.4/angular.min.js"></script>
+</head>
+<body ng-app="app">
+    <div class="container" ng-controller="TitleController as titles">
+        <h1>{{titles.title}}</h1>
+    </div>
+    <div class="container" ng-controller="ShowsController as shows">
+        <div class="input-group">
+            <span class="input-group-addon">
+                <span class="glyphicon glyphicon-search"></span>
+            </span>
+            <input type="text" class="form-control" ng-model="shows.searchInput">
+        </div>
+        <br/>
+        <p ng-if="shows.searchInput">You Searched For: <span ng-bind="shows.searchInput"></span></p>
+        <span ng-show="(shows.series | filter:shows.searchInput).length == 0">No results</span>
+        <h3>{{shows.title}}</h3>
+        <ul class="list-group">
+            <li class="list-group-item" ng-repeat="show in shows.series | filter: shows.searchInput | orderBy: shows.order.key:shows.order.reverse"><span class="glyphicon glyphicon-star" ng-if="show.favorite"></span>{{show.title}} <span class="badge">{{show.year}}</span><button class="btn btn-danger" ng-click="shows.remove(show)"><span class="glyphicon glyphicon-minus-sign"> Remove</span></button></form></li>
+        </ul>
+        <select class="form-control pull-right" ng-model="shows.order" ng-options="order as order.title for order in shows.orders"></select>
+        <div class="clearfix"></div>
+            <h3>Add a New TV Show</h3>
+            <form name="shows.addForm" class="form" ng-submit="shows.addShow()">
+                <div class="form-group">
+                    <label>Title</label>
+                    <input type="text" class="form-control" ng-model="shows.new.title" required />
+                </div>
+                <div class="form-group">
+                    <label>Year</label>
+                    <input type="number" min="1900" max="2030" class="form-control" ng-model="shows.new.year" required />
+                </div>
+                <div class="row">
+                    <div class="col-xs-6">
+                        <label>Favorite: <input type="checkbox" ng-model="shows.new.favorite" /></label>
+                    </div>
+                    <div class="col-xs-6">
+                        <button class="btn btn-success pull-right"><span class="glyphicon glyphicon-plus-sign"></span> Add</button>
+                    </div>
+                </div>
+            </form>
+    </div>
+<!--Model-->
+<script src="app.js"></script>
+<!--Controllers-->
+<script src="main-ctrl.js"></script>
+</body>
+</html>
